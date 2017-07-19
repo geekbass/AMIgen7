@@ -39,7 +39,7 @@ function CarveLVM() {
    local HOMEVOL=(homeVol 8g)
    local VARVOL=(varVol 24g)
    local LOGVOL=(logVol 8g)
-   local AUDVOL=(auditVol 2g
+   local AUDVOL=(auditVol 2g)
 
    # Clear the MBR and partition table
    dd if=/dev/zero of="${CHROOTDEV}" bs=512 count=1000 > /dev/null 2>&1
