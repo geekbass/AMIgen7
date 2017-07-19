@@ -46,10 +46,10 @@ function CarveLVM() {
 
    # Lay down the base partitions
    parted -s "${CHROOTDEV}" -- mklabel msdos mkpart primary ext4 2048s ${BOOTDEVSZ} \
-      mkpart primary xfs ${BOOTDEVSZ} 100% set 2 lvm
+      mkpart primary ext4 ${BOOTDEVSZ} 100% set 2 lvm
 
    # Stop/umount boot device, in case parted/udev/systemd managed to remount it
-  #systemctl stop boot.mount
+  systemctl stop boot.mount
 
    # Create LVM objects
    vgcreate -y "${VGNAME}" "${CHROOTDEV}2" || LogBrk 5 "VG creation failed. Aborting!"
