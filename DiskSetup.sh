@@ -34,12 +34,12 @@ function LogBrk() {
 
 # Partition as LVM
 function CarveLVM() {
-   local ROOTVOL=(rootVol 4g)
-   local SWAPVOL=(swapVol 2g)
-   local HOMEVOL=(homeVol 1g)
-   local VARVOL=(varVol 2g)
-   local LOGVOL=(logVol 2g)
-   local AUDVOL=(auditVol 100%FREE)
+   local ROOTVOL=(root 32g)
+   local SWAPVOL=(swap 8g)
+   local HOMEVOL=(home 8g)
+   local VARVOL=(var 24g)
+   local LOGVOL=(var_log 8g)
+   local AUDVOL=(var_log_audit 2g)
 
    # Clear the MBR and partition table
    dd if=/dev/zero of="${CHROOTDEV}" bs=512 count=1000 > /dev/null 2>&1
@@ -81,11 +81,11 @@ function CarveLVM() {
 
    # Create filesystems
    mkfs -t ext4 -L "${BOOTLABEL}" "${CHROOTDEV}1" || err_exit "Failure creating filesystem - /boot"
-   mkfs -t ext4 "/dev/${VGNAME}/${ROOTVOL[0]}" || err_exit "Failure creating filesystem - /"
-   mkfs -t ext4 "/dev/${VGNAME}/${HOMEVOL[0]}" || err_exit "Failure creating filesystem - /home"
-   mkfs -t ext4 "/dev/${VGNAME}/${VARVOL[0]}" || err_exit "Failure creating filesystem - /var"
-   mkfs -t ext4 "/dev/${VGNAME}/${LOGVOL[0]}" || err_exit "Failure creating filesystem - /var/log"
-   mkfs -t ext4 "/dev/${VGNAME}/${AUDVOL[0]}" || err_exit "Failure creating filesystem - /var/log/audit"
+   mkfs -t xfs "/dev/${VGNAME}/${ROOTVOL[0]}" || err_exit "Failure creating filesystem - /"
+   mkfs -t xfs "/dev/${VGNAME}/${HOMEVOL[0]}" || err_exit "Failure creating filesystem - /home"
+   mkfs -t xfs "/dev/${VGNAME}/${VARVOL[0]}" || err_exit "Failure creating filesystem - /var"
+   mkfs -t xfs "/dev/${VGNAME}/${LOGVOL[0]}" || err_exit "Failure creating filesystem - /var/log"
+   mkfs -t xfs "/dev/${VGNAME}/${AUDVOL[0]}" || err_exit "Failure creating filesystem - /var/log/audit"
    mkswap "/dev/${VGNAME}/${SWAPVOL[0]}"
 
    # shellcheck disable=SC2053
