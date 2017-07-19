@@ -34,12 +34,12 @@ function LogBrk() {
 
 # Partition as LVM
 function CarveLVM() {
-   local ROOTVOL=(root 32g)
-   local SWAPVOL=(swap 8g)
-   local HOMEVOL=(home 8g)
-   local VARVOL=(var 24g)
-   local LOGVOL=(var_log 8g)
-   local AUDVOL=(var_log_audit 2g)
+   local ROOTVOL=(rootVol 32g)
+   local SWAPVOL=(swapVol 8g)
+   local HOMEVOL=(homeVol 8g)
+   local VARVOL=(varVol 24g)
+   local LOGVOL=(logVol 8g)
+   local AUDVOL=(auditVol 2g
 
    # Clear the MBR and partition table
    dd if=/dev/zero of="${CHROOTDEV}" bs=512 count=1000 > /dev/null 2>&1
@@ -77,7 +77,7 @@ function CarveLVM() {
 
    # Stop/umount boot device, in case parted/udev/systemd managed to remount it
    # again.
-  systemctl stop boot.mount
+  #systemctl stop boot.mount
 
    # Create filesystems
    mkfs -t ext4 -L "${BOOTLABEL}" "${CHROOTDEV}1" || err_exit "Failure creating filesystem - /boot"
