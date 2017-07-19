@@ -46,7 +46,7 @@ function CarveLVM() {
 
    # Lay down the base partitions
    parted -s "${CHROOTDEV}" -- mklabel msdos mkpart primary ext4 2048s ${BOOTDEVSZ} \
-      mkpart primary ext4 ${BOOTDEVSZ} 100% set 2 lvm
+      mkpart primary xfs ${BOOTDEVSZ} 100% set 2 lvm
 
    # Stop/umount boot device, in case parted/udev/systemd managed to remount it
   systemctl stop boot.mount
