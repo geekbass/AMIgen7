@@ -45,8 +45,8 @@ then
    vgchange -a y "${VGNAME}" || err_out 2 "Failed to activate LVM"
 
    # Mount chroot base device
-   echo "Mounting /dev/${VGNAME}/rootVol to ${ALTROOT}"
-   mount "/dev/${VGNAME}/rootVol" "${ALTROOT}/" || err_out 2 "Mount Failed"
+   echo "Mounting /dev/${VGNAME}/root to ${ALTROOT}"
+   mount "/dev/${VGNAME}/root" "${ALTROOT}/" || err_out 2 "Mount Failed"
 
    # Prep for next-level mounts
    mkdir -p "${ALTROOT}"/{var,opt,home,boot,etc} || err_out 3 "Mountpoint Create Failed"
@@ -56,24 +56,24 @@ then
    mount "${BOOTDEV}" "${ALTROOT}/boot/" || err_out 2 "Mount Failed"
 
    # Mount first of /var hierarchy
-   echo "Mounting /dev/${VGNAME}/varVol to ${ALTROOT}/var"
-   mount "/dev/${VGNAME}/varVol" "${ALTROOT}/var/" || err_out 2 "Mount Failed"
+   echo "Mounting /dev/${VGNAME}/var to ${ALTROOT}/var"
+   mount "/dev/${VGNAME}/var" "${ALTROOT}/var/" || err_out 2 "Mount Failed"
 
    # Prep next-level mountpoints
    mkdir -p "${ALTROOT}"/var/{cache,log,lock,lib/{,rpm},tmp}
 
    # Mount log volume
-   echo "Mounting /dev/${VGNAME}/logVol to ${ALTROOT}/var/log"
-   mount "/dev/${VGNAME}/logVol" "${ALTROOT}/var/log" 
+   echo "Mounting /dev/${VGNAME}/var_log to ${ALTROOT}/var/log"
+   mount "/dev/${VGNAME}/var_log" "${ALTROOT}/var/log"
 
    # Mount audit volume
    mkdir "${ALTROOT}/var/log/audit"
-   echo "Mounting /dev/${VGNAME}/auditVol to ${ALTROOT}/var/log/audit"
-   mount "/dev/${VGNAME}/auditVol" "${ALTROOT}/var/log/audit"
+   echo "Mounting /dev/${VGNAME}/var_log_audit to ${ALTROOT}/var/log/audit"
+   mount "/dev/${VGNAME}/var_log_audit" "${ALTROOT}/var/log/audit"
 
    # Mount the rest
-   echo "Mounting /dev/${VGNAME}/homeVol to ${ALTROOT}/home"
-   mount "/dev/${VGNAME}/homeVol" "${ALTROOT}/home/"
+   echo "Mounting /dev/${VGNAME}/home to ${ALTROOT}/home"
+   mount "/dev/${VGNAME}/home" "${ALTROOT}/home/"
 else
    ########################################################
    ## NOTE: This section assumes a simple, two-partition ##

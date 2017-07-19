@@ -4,7 +4,7 @@
 #
 #################################################################
 CHROOT="${CHROOT:-/mnt/ec2-root}"
-TARGSWAP=${2:-/dev/VolGroup00/swapVol}
+TARGSWAP=${2:-/dev/vg0/swap}
 FSTAB="${CHROOT}/etc/fstab"
 
 # Check for arguments
@@ -22,7 +22,7 @@ then
    then
       echo "Failed to create /etc" > /dev/stderr && exit 1
    else
-      echo "Created ${CHROOT}/etc" 
+      echo "Created ${CHROOT}/etc"
    fi
 fi
 
@@ -80,4 +80,3 @@ do
 
    printf "%s %s %s %s %s %s\n" "${BLKDEV}" "${MNTPNT}" "${FSTYPE}" "${MNTOPT}" "${FSFREQ}" "${FSPASS}"
 done > "${CHROOT}/etc/mtab"
-

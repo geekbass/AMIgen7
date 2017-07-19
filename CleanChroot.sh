@@ -7,7 +7,8 @@
 CHROOT=${CHROOT:-/mnt/ec2-root}
 CLOUDCFG="$CHROOT/etc/cloud/cloud.cfg"
 JRNLCNF="$CHROOT/etc/systemd/journald.conf"
-MAINTUSR="maintuser"
+#MAINTUSR="maintuser"
+AWSUSR="ec2-user"
 
 # Disable EPEL repos
 chroot "${CHROOT}" yum-config-manager --disable "*epel*" > /dev/null
@@ -47,16 +48,16 @@ if [ "${CLINITUSR}" = "" ]
 then
    echo "Cannot reset value of cloud-init default-user" > /dev/stderr
 else
-   echo "Setting default cloud-init user to ${MAINTUSR}"
+   echo "Setting default cloud-init user to ${AWSUSR}"
 sed -i '/^system_info/,/^  ssh_svcname/d' "${CLOUDCFG}"
 # shellcheck disable=SC1004
 sed -i '/syntax=yaml/i\
 system_info:\
   default_user:\
-    name: maintuser\
+    name: ec2-user\
     lock_passwd: true\
-    gecos: Local Maintenance User\
-    groups: [wheel, adm]\
+    gecos: Cloud User\
+    groups: [wheel, adm, systemd-journal]\
     sudo: ["ALL=(root) NOPASSWD:ALL"]\
     shell: /bin/bash\
   distro: rhel\
@@ -66,4 +67,3 @@ system_info:\
   ssh_svcname: sshd\
 ' "${CLOUDCFG}"
 fi
-
