@@ -6,7 +6,7 @@
 #########################
 CHROOT=${CHROOT:-/mnt/ec2-root}
 CLOUDCFG="$CHROOT/etc/cloud/cloud.cfg"
-JRNLCNF="$CHROOT/etc/systemd/journald.conf"
+#JRNLCNF="$CHROOT/etc/systemd/journald.conf"
 #MAINTUSR="maintuser"
 AWSUSR="ec2-user"
 
@@ -29,16 +29,17 @@ do
 done
 
 # Enable persistent journal logging
-if [[ $(grep -q ^Storage "${JRNLCNF}")$? -ne 0 ]]
-then
-   echo 'Storage=persistent' >> "${JRNLCNF}"
-   install -d -m 0755 "${CHROOT}/var/log/journal"
-   chroot "${CHROOT}" systemd-tmpfiles --create --prefix /var/log/journal
-fi
+#if [[ $(grep -q ^Storage "${JRNLCNF}")$? -ne 0 ]]
+#then
+#   echo 'Storage=persistent' >> "${JRNLCNF}"
+#   install -d -m 0755 "${CHROOT}/var/log/journal"
+#   chroot "${CHROOT}" systemd-tmpfiles --create --prefix /var/log/journal
+#fi
 
-# Set TZ to UTC
+# Set TZ to EST
 rm "${CHROOT}/etc/localtime"
-cp "${CHROOT}/usr/share/zoneinfo/UTC" "${CHROOT}/etc/localtime"
+#cp "${CHROOT}/usr/share/zoneinfo/UTC" "${CHROOT}/etc/localtime"
+ln -sf "${CHROOT}/usr/share/zoneinfo/America/New_York" "${CHROOT}/etc/localtime"
 
 # Create maintuser
 CLINITUSR=$(grep -E "name: (maintuser|centos|ec2-user|cloud-user)" \
