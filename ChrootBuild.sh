@@ -161,6 +161,7 @@ esac
 ${YUMDO} @core -- \
 "$(rpm --qf '%{name}\n' -qf /etc/yum.repos.d/* 2>&1 | grep -v "not owned" | sort -u)" \
     authconfig \
+    bind-utils \
     chrony \
     cloud-init \
     cloud-utils-growpart \
