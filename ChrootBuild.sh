@@ -165,6 +165,7 @@ ${YUMDO} @core -- \
     chrony \
     cloud-init \
     cloud-utils-growpart \
+    dos2unix\
     dracut-config-generic \
     "${FIPSRPM}" \
     dracut-norescue \
@@ -186,6 +187,7 @@ ${YUMDO} @core -- \
     sudo \
     tar \
     vim-common \
+    vim-enhanced \
     wget \
     yum-utils \
     -abrt \
