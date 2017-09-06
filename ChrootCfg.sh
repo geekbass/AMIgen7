@@ -67,6 +67,15 @@ chroot "${CHROOT}" /bin/sh -c "(rpm -q --scripts selinux-policy-targeted | \
    sed -e '1i #!/bin/sh') > /tmp/selinuxconfig.sh ; \
    sh /tmp/selinuxconfig.sh 1"
 
+# Disable Selinux
+sed -i s/SELINUX=enforcing/SELINUX=disabled/g "${CHROOT}/etc/selinux/config"
+
+# Disable IPv6
+cat << EOF >> "${CHROOT}/etc/sysctl.conf"
+net.ipv6.conf.all.disable_ipv6=1
+net.ipv6.conf.default.disable_ipv6=1
+EOF
+
 # Execute any localizations if a valid script-location is
 # passed as a shell-env
 if [[ ${EXECIT} = "UNDEF" ]]
