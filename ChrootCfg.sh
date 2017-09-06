@@ -9,6 +9,8 @@
 # * Enable ntpd client-service - if server is defined in
 #   ntp.conf
 # * Ensure that selinux policy-definitions are in place
+# * We are going to disable selinux but leave it as an option for later
+# * Disable IPv6 since we arent there yet
 # * Process a secondary localization script if the
 #   secondary-script the environmental-variable
 #   (${LOCALSCRIPT}) is set and points to a valid
@@ -47,7 +49,7 @@ then
    # Only enable NTPD if a "server" line is found
    if [[ $(grep -q "^server" "${NTPCONF}")$? -eq 0 ]]
    then
-      chroot "${CHROOT}" /bin/sh -c "/sbin/chkconfig ntpd on" 
+      chroot "${CHROOT}" /bin/sh -c "/sbin/chkconfig ntpd on"
    else
       printf "%s does not exist or does not " "${NTPCONF}" > /dev/stderr
       printf "have a \"server\" defined.\n" > /dev/stderr
@@ -56,8 +58,8 @@ then
 fi
 
 # Ensure that tmp.mount Service is enabled
-chroot "${CHROOT}" /bin/systemctl unmask tmp.mount 
-chroot "${CHROOT}" /bin/systemctl enable tmp.mount 
+chroot "${CHROOT}" /bin/systemctl unmask tmp.mount
+chroot "${CHROOT}" /bin/systemctl enable tmp.mount
 
 # Ensure that SELinux policy files are installed
 chroot "${CHROOT}" /bin/sh -c "(rpm -q --scripts selinux-policy-targeted | \
@@ -77,4 +79,3 @@ then
 else
    echo "Content-localization file is null: will not attempt execution."
 fi
-
