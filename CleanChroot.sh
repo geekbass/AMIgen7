@@ -70,4 +70,4 @@ system_info:\
 fi
 
 # get rid of default disable ec2 metadata in cloud config
-sed -i -e 's/- disable-ec2-metadata/#- disable-ec2-metadata/g' "${CLOUDCFG}
+#sed -i -e 's/- disable-ec2-metadata/#- disable-ec2-metadata/g' "${CLOUDCFG}
