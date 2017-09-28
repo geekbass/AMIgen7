@@ -28,7 +28,7 @@ do
    cat /dev/null > "${FILE}"
 done
 
-# Enable persistent journal logging
+# Enable persistent journal logging NOOOOPE!!!
 #if [[ $(grep -q ^Storage "${JRNLCNF}")$? -ne 0 ]]
 #then
 #   echo 'Storage=persistent' >> "${JRNLCNF}"
@@ -68,3 +68,6 @@ system_info:\
   ssh_svcname: sshd\
 ' "${CLOUDCFG}"
 fi
+
+# get rid of default disable ec2 metadata in cloud config
+sed -i -e 's/- disable-ec2-metadata/#- disable-ec2-metadata/g' "${CLOUDCFG}
